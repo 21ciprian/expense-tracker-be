@@ -9,10 +9,13 @@ router.get('/', async (req, res) => {
 	})
 })
 router.post('/', async (req, res) => {
-	const newTansaction = await transactions.addTransaction()
+	const {text, amount} = req.body
+	const newTansaction = await transactions.addTransaction(text, amount)
+	const allTransactions = await transactions.getTransactions()
 	res.status(200).json({
 		success: true,
 		payload: newTansaction,
+		all: allTransactions,
 	})
 })
 
