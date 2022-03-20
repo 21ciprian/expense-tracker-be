@@ -2,18 +2,25 @@ import express from 'express'
 import * as transactions from '../controllers/transactionController.js'
 const router = express.Router()
 router.get('/', async (req, res) => {
-	const allTransactions = await transactions.getTransactions()
-	res.status(200).json({
-		success: true,
-		payload: allTransactions,
-	})
+	try {
+		const allTransactions = await transactions.getTransactions()
+		res.status(200).json({
+			success: true,
+			payload: allTransactions,
+		})
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			error: `Server Error`,
+		})
+	}
 })
 router.post('/', async (req, res) => {
 	try {
 		const {text, amount} = req.body
-		const newTransaction = await transactions.addTransaction(text, amount)
+		const newTransaction = await transactions.addTransaction(req.body)
 		const allTransactions = await transactions.getTransactions()
-		res.status(200).json({
+		res.status(201).json({
 			success: true,
 			payload: newTransaction,
 			all: allTransactions,

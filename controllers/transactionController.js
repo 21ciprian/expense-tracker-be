@@ -9,12 +9,9 @@ export async function getTransactions() {
 	return transactions
 }
 //add transaction POST
-export async function addTransaction(text, amount) {
-	const newTransaction = {
-		id: Math.random() * 10000,
-		text,
-		amount,
-	}
+export async function addTransaction(body) {
+	const newTransaction = await Transaction.create(body)
+	console.log('newTransaction: ', newTransaction)
 	return newTransaction
 }
 //delete transaction by id DELETE
