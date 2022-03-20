@@ -1,0 +1,19 @@
+import colors from 'colors'
+import cors from 'cors'
+import 'dotenv/config'
+import express from 'express'
+import transactionsRouter from './routes/transactions.js'
+const app = express()
+
+app.use(cors())
+app.use(express.json())
+const PORT = process.env.PORT
+app.use('/api/v1/transactions', transactionsRouter)
+app.listen(
+	PORT,
+	console.log(
+		colors.yellow.bold(
+			`server is listening in ${process.env.NODE_ENV}  on port ${PORT}`
+		)
+	)
+)
