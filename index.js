@@ -2,9 +2,10 @@ import colors from 'colors'
 import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
+import connectDB from './db/dbConnect.js'
 import transactionsRouter from './routes/transactions.js'
 const app = express()
-
+connectDB()
 app.use(cors())
 app.use(express.json())
 const PORT = process.env.PORT

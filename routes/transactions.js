@@ -9,12 +9,29 @@ router.get('/', async (req, res) => {
 	})
 })
 router.post('/', async (req, res) => {
-	const {text, amount} = req.body
-	const newTansaction = await transactions.addTransaction(text, amount)
+	try {
+		const {text, amount} = req.body
+		const newTransaction = await transactions.addTransaction(text, amount)
+		const allTransactions = await transactions.getTransactions()
+		res.status(200).json({
+			success: true,
+			payload: newTransaction,
+			all: allTransactions,
+		})
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			error: `Server Error`,
+		})
+	}
+})
+router.delete('/:id', async (req, res) => {
+	const id = req.params.id
+	const deletedTansaction = await transactions.deleteTransaction(id)
 	const allTransactions = await transactions.getTransactions()
 	res.status(200).json({
 		success: true,
-		payload: newTansaction,
+		payload: deletedTansaction,
 		all: allTransactions,
 	})
 })
