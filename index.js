@@ -2,6 +2,7 @@ import colors from 'colors'
 import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
+import morgan from 'morgan'
 import connectDB from './db/dbConnect.js'
 import transactionsRouter from './routes/transactions.js'
 const app = express()
@@ -10,6 +11,10 @@ app.use(cors())
 app.use(express.json())
 const PORT = process.env.PORT
 app.use('/api/v1/transactions', transactionsRouter)
+
+if (process.env === 'development') {
+	app.use(morgan('dev'))
+}
 app.listen(
 	PORT,
 	console.log(

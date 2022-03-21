@@ -1,8 +1,9 @@
 import colors from 'colors'
 import mongoose from 'mongoose'
+const uri = process.env.MONGODB_URI
 const connectDB = async () => {
 	try {
-		const conn = await mongoose.connect(process.env.MONGO_URI)
+		const conn = await mongoose.connect(uri)
 		console.log(
 			colors.cyan.underline.bold(`MongoDB Connected: ${conn.connection.host}`)
 		)
