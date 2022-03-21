@@ -17,7 +17,7 @@ export async function addTransaction(body) {
 //delete transaction by id DELETE
 
 export async function deleteTransaction(id) {
-	const deletedTransaction = allTransactions.filter(item => item.id !== id)
+	const deletedTransaction = Transaction.findById(id)
 
 	return deletedTransaction
 }

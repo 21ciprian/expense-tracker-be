@@ -42,14 +42,27 @@ router.post('/', async (req, res) => {
 	}
 })
 router.delete('/:id', async (req, res) => {
-	const id = req.params.id
-	const deletedTansaction = await transactions.deleteTransaction(id)
-	const allTransactions = await transactions.getTransactions()
-	res.status(200).json({
-		success: true,
-		payload: deletedTansaction,
-		all: allTransactions,
-	})
+	try {
+		const id = req.params.id
+		const deletedTansaction = await transactions.deleteTransaction(id)
+		if (!deletedTansaction) {
+			return res.status(404).json({
+				success: false,
+				error: 'No transaction found',
+			})
+		} else {
+			await deletedTansaction.remove()
+			res.status(200).json({
+				success: true,
+				payload: deletedTansaction,
+			})
+		}
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			error: `Server Error`,
+		})
+	}
 })
 
 export default router
