@@ -26,10 +26,19 @@ router.post('/', async (req, res) => {
 			all: allTransactions,
 		})
 	} catch (error) {
-		return res.status(500).json({
-			success: false,
-			error: `Server Error`,
-		})
+		if (error.name === 'ValidationError') {
+			const messages = Object.values(error.errors).map(val => val.message)
+			console.log('error messages: ', messages)
+			return res.status(400).json({
+				success: false,
+				error: messages,
+			})
+		} else {
+			return res.status(500).json({
+				success: false,
+				error: `Server Error`,
+			})
+		}
 	}
 })
 router.delete('/:id', async (req, res) => {
