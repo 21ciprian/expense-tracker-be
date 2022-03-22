@@ -12,7 +12,7 @@ app.use(express.json())
 const PORT = process.env.PORT
 app.use('/api/v1/transactions', transactionsRouter)
 
-if (process.env === 'development') {
+if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'))
 }
 app.listen(
