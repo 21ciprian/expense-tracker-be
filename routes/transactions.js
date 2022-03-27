@@ -69,5 +69,32 @@ router.delete('/:id/transactions/:tid', async (req, res) => {
 		})
 	}
 })
+router.patch('/:id/transactions/:tid', async (req, res) => {
+	try {
+		const {id, tid} = req.params
+		const updatedTransaction = await transactions.updateTransaction(id, tid)
+		console.log('updatedTransaction: ', updatedTransaction)
+		const testObj = Object.assign(updatedTransaction, req.body)
+		console.log('testObj: ', testObj)
+		if (!updatedTransaction) {
+			return res.status(404).json({
+				success: false,
+				error: 'No transaction found',
+			})
+		} else {
+			await testObj.save()
+			res.status(200).json({
+				success: true,
+				payload: testObj,
+			})
+		}
+		return testObj
+	} catch (error) {
+		return res.status(500).json({
+			success: false,
+			error: `Server Error`,
+		})
+	}
+})
 
 export default router

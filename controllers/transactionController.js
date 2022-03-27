@@ -30,6 +30,12 @@ export async function addTransaction(body) {
 }
 //delete transaction by id DELETE
 
+export async function updateTransaction(id, tid) {
+	console.log(id)
+	const updatedTransaction = await Transaction.findById(tid)
+
+	return updatedTransaction
+}
 export async function deleteTransaction(id, tid) {
 	console.log(id)
 	const deletedTransaction = await Transaction.findById(tid)
