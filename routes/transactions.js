@@ -1,9 +1,9 @@
 import express from 'express'
 import * as transactions from '../controllers/transactionController.js'
 const router = express.Router()
-router.get('/', async (req, res) => {
+router.get('/:id/transactions', async (req, res) => {
 	try {
-		const allTransactions = await transactions.getTransactions()
+		const allTransactions = await transactions.getTransactions(req.params.id)
 		res.status(200).json({
 			success: true,
 			payload: allTransactions,
@@ -15,11 +15,14 @@ router.get('/', async (req, res) => {
 		})
 	}
 })
-router.post('/', async (req, res) => {
+router.post('/:id/transactions', async (req, res) => {
+	console.log('req.body router post: ', req.body)
 	try {
-		const {text, amount} = req.body
-		const newTransaction = await transactions.addTransaction(req.body)
-		const allTransactions = await transactions.getTransactions()
+		const newTransaction = await transactions.addTransaction(
+			req.body,
+			req.params.id
+		)
+		const allTransactions = await transactions.getTransactions(req.params.id)
 		res.status(201).json({
 			success: true,
 			payload: newTransaction,
@@ -41,10 +44,11 @@ router.post('/', async (req, res) => {
 		}
 	}
 })
-router.delete('/:id', async (req, res) => {
+router.delete('/:id/transactions/:tid', async (req, res) => {
 	try {
-		const id = req.params.id
-		const deletedTansaction = await transactions.deleteTransaction(id)
+		const {id, tid} = req.params
+		const deletedTansaction = await transactions.deleteTransaction(id, tid)
+		console.log('deletedTansaction: ', deletedTansaction)
 		if (!deletedTansaction) {
 			return res.status(404).json({
 				success: false,
@@ -57,6 +61,7 @@ router.delete('/:id', async (req, res) => {
 				payload: deletedTansaction,
 			})
 		}
+		return deletedTansaction
 	} catch (error) {
 		return res.status(500).json({
 			success: false,
