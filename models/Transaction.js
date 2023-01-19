@@ -1,19 +1,30 @@
 import mongoose from 'mongoose'
 const TransactionSchema = new mongoose.Schema({
-	text: {
+	transactionName: {
 		type: String,
 		trim: true,
-		required: [true, 'Please add text'],
+		required: [ true, 'Please add a name to your transaction' ],
+	},
+	description: {
+		type: String,
+		trim: true,
+		required: [ true, 'Please add a description to your transaction' ],
+	},
+	venue: {
+		type: String,
+		trim: true,
+	},
+	date: {
+		type: String,
+		trim: true,
+		required: [ true, 'Please add a date to your transaction' ],
 	},
 	amount: {
 		type: Number,
 		required: true,
-		required: [true, 'Please add a positive or negative number'],
+		required: [ true, 'Please add an amount' ],
 	},
-	email: {
-		type: String,
-		required: true,
-	},
+
 	createdAt: {
 		type: Date,
 		default: Date.now,
