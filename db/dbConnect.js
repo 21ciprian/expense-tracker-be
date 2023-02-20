@@ -4,6 +4,10 @@ const uri = process.env.MONGODB_URI
 const connectDB = async () => {
 	try
 	{
+		if (!uri)
+		{
+			return
+		}
 		const conn = await mongoose.connect(uri)
 		console.log(
 			colors.cyan.underline.bold(`MongoDB Connected: ${conn.connection.host}`)
